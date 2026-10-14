@@ -11,7 +11,6 @@ import * as inputController from './input-controller.js';
 import * as screenshot from './screenshot.js';
 import * as windowManager from './window-manager.js';
 import * as wpfInspect from './wpf-inspect.js';
-import * as pixelAnalyze from './pixel-analyze.js';
 import { bboxToScreenCoords, parseBBox } from './utils.js';
 import { SCREENSHOT_CONFIG } from './config.js';
 import { getInstalledApps } from 'get-installed-apps';
@@ -385,31 +384,10 @@ const TOOLS = [
             required: ['appName']
         }
     },
-    {
-        name: 'ui_inspect',
-        description: 'Inspect WPF visual tree. Returns all UI elements with type, id, name, position, size.',
-        inputSchema: { type: 'object', properties: { processName: { type: 'string', description: 'Process name' } }, required: ['processName'] }
-    },
-    {
-        name: 'ui_get_element',
-        description: 'Get specific UI element by AutomationId. Returns type, position, size, text.',
-        inputSchema: { type: 'object', properties: { processName: { type: 'string' }, automationId: { type: 'string' } }, required: ['processName', 'automationId'] }
-    },
-    {
-        name: 'ui_set_text',
-        description: 'Set text on a UI element by AutomationId.',
-        inputSchema: { type: 'object', properties: { processName: { type: 'string' }, automationId: { type: 'string' }, text: { type: 'string' } }, required: ['processName', 'automationId', 'text'] }
-    },
-    {
-        name: 'ui_invoke',
-        description: 'Invoke (click) a button by AutomationId.',
-        inputSchema: { type: 'object', properties: { processName: { type: 'string' }, automationId: { type: 'string' } }, required: ['processName', 'automationId'] }
-    },
-    {
-        name: 'pixel_analyze',
-        description: 'Analyze pixel colors. Detects white backgrounds and contrast issues.',
-        inputSchema: { type: 'object', properties: { processName: { type: 'string' } }, required: ['processName'] }
-    },
+    { name: 'ui_inspect', description: 'Inspect WPF visual tree', inputSchema: { type: 'object', properties: { processName: { type: 'string' } }, required: ['processName'] } },
+    { name: 'ui_get_element', description: 'Get element by AutomationId', inputSchema: { type: 'object', properties: { processName: { type: 'string' }, automationId: { type: 'string' } }, required: ['processName', 'automationId'] } },
+    { name: 'ui_set_text', description: 'Set text on element', inputSchema: { type: 'object', properties: { processName: { type: 'string' }, automationId: { type: 'string' }, text: { type: 'string' } }, required: ['processName', 'automationId', 'text'] } },
+    { name: 'ui_invoke', description: 'Invoke button by AutomationId', inputSchema: { type: 'object', properties: { processName: { type: 'string' }, automationId: { type: 'string' } }, required: ['processName', 'automationId'] } },
 ];
 // 注册工具列表处理器
 server.setRequestHandler(ListToolsRequestSchema, async () => {
@@ -878,26 +856,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                         }]
                 };
             }
-            case 'ui_inspect': {
-                const r1 = await wpfInspect.uiInspect(args.processName);
-                return { content: [{ type: 'text', text: JSON.stringify(r1, null, 2) }] };
-            }
-            case 'ui_get_element': {
-                const r2 = await wpfInspect.uiGetElement(args.processName, args.automationId);
-                return { content: [{ type: 'text', text: JSON.stringify(r2, null, 2) }] };
-            }
-            case 'ui_set_text': {
-                const r3 = await wpfInspect.uiSetText(args.processName, args.automationId, args.text);
-                return { content: [{ type: 'text', text: JSON.stringify(r3, null, 2) }] };
-            }
-            case 'ui_invoke': {
-                const r4 = await wpfInspect.uiInvoke(args.processName, args.automationId);
-                return { content: [{ type: 'text', text: JSON.stringify(r4, null, 2) }] };
-            }
-            case 'pixel_analyze': {
-                const r5 = await pixelAnalyze.pixelAnalyze(args.processName);
-                return { content: [{ type: 'text', text: JSON.stringify(r5, null, 2) }] };
-            }
+            case 'ui_inspect': { const r = await wpfInspect.uiInspect(args.processName); return { content: [{ type: 'text', text: JSON.stringify(r) }] }; }
+            case 'ui_get_element': { const r = await wpfInspect.uiGetElement(args.processName, args.automationId); return { content: [{ type: 'text', text: JSON.stringify(r) }] }; }
+            case 'ui_set_text': { const r = await wpfInspect.uiSetText(args.processName, args.automationId, args.text); return { content: [{ type: 'text', text: JSON.stringify(r) }] }; }
+            case 'ui_invoke': { const r = await wpfInspect.uiInvoke(args.processName, args.automationId); return { content: [{ type: 'text', text: JSON.stringify(r) }] }; }
             default:
                 throw new Error(`Unknown tool: ${name}`);
         }
