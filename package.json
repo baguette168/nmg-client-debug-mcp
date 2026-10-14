@@ -1,0 +1,59 @@
+﻿{
+    "name":  "nmg-client-debug-mcp",
+    "version":  "0.1.0",
+    "description":  "Professional desktop client debugging MCP - UI inspection, pixel analysis, network debugging for WPF/WinForms applications. Adapted from @cool-mcp/desktop-automation.",
+    "type":  "module",
+    "main":  "dist/index.js",
+    "bin":  {
+                "nmg-debug":  "./dist/index.js"
+            },
+    "files":  [
+                  "dist",
+                  "src/scripts",
+                  "README.md"
+              ],
+    "scripts":  {
+                    "build":  "tsc",
+                    "prepublishOnly":  "npm run build",
+                    "start":  "node dist/index.js",
+                    "dev":  "tsx src/index.ts"
+                },
+    "keywords":  [
+                     "mcp",
+                     "model-context-protocol",
+                     "desktop-automation",
+                     "mouse",
+                     "keyboard",
+                     "screenshot",
+                     "window-management",
+                     "ai-agent"
+                 ],
+    "author":  "",
+    "license":  "MIT",
+    "repository":  {
+                       "type":  "git",
+                       "url":  ""
+                   },
+    "publishConfig":  {
+                          "access":  "public"
+                      },
+    "dependencies":  {
+                         "@computer-use/nut-js":  "^4.2.0",
+                         "@modelcontextprotocol/sdk":  "^1.0.0",
+                         "get-installed-apps":  "^1.1.1",
+                         "get-windows":  "^9.2.3",
+                         "jimp":  "1.6.0",
+                         "node-screenshots":  "^0.2.1",
+                         "open":  "^11.0.0",
+                         "ps-list":  "^9.0.0",
+                         "zod":  "^3.23.0"
+                     },
+    "devDependencies":  {
+                            "@types/node":  "^22.0.0",
+                            "tsx":  "^4.19.0",
+                            "typescript":  "^5.6.0"
+                        },
+    "engines":  {
+                    "node":  "\u003e=18.0.0"
+                }
+}
